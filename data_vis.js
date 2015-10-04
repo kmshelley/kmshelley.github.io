@@ -194,7 +194,7 @@ var load_text = function(){
 	//Page title and subtitle
 	d3.select("body")
 		.append("h1")
-		.text("W209 Assignment 4")
+		.text("W209 Assignment 3")
 		.style("font","cambria")
 		.style("font-size","24px")
 		.style("text-align","center")
