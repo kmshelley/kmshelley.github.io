@@ -1,0 +1,58 @@
+svg{
+	display: block;
+	margin: auto;
+}
+
+.bar {
+  fill: red;
+}
+
+.line {
+  fill: none;
+  stroke: steelblue;
+  stroke-width: 2.5px;
+}
+
+.legend {
+	font-family: cambria;
+	font-size: 18px;
+	color: rgb(150,150,150);
+	width: 400px
+}
+
+.axis path,
+.axis line {
+    fill: none;
+    stroke: gray;
+    shape-rendering: crispEdges;
+}
+
+.axis text {
+    font-family: cambria;
+    font-size: 14px;
+	fill: gray;
+}
+
+
+body{
+	width: 1200px;
+}
+h2{
+	font-family: cambria;
+	font-size: 20px;
+	text-align: center;
+	color: rgb(150,150,150);
+}
+h3{
+	font-family: cambria;
+	font-size: 20px;
+	text-align: center;
+	color: rgb(150,150,150);
+}
+
+p{
+	font-family: cambria;
+	font-size: 14px;
+	text-align: center;
+	color: rgb(150,150,150);	
+}

@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Visualizing Campaign Finance</title>
+		<link rel="stylesheet" href="d3_style.css">
+    </head>
+    <body>
+		<script type="text/javascript" src="d3.js"></script>
+		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+		<script type="text/javascript" src="colorbrewer.js"></script>
+		<script type="text/javascript">
+
+
+var line_chart = function(data){
+	
+	var margin = {top: 20, right: 20, bottom: 30, left: 150},
+		width = 1500 - margin.left - margin.right,
+		height = 500 - margin.top - margin.bottom;
+
+	var x = d3.scale.linear()
+		.range([0, width]);
+
+	var y = d3.scale.linear()
+		.range([height, 0]);
+
+	var xAxis = d3.svg.axis()
+		.scale(x)
+		.orient("bottom");
+
+	var yAxis = d3.svg.axis()
+		.scale(y)
+		.orient("left");
+
+	var colors = colorbrewer.Greens[years.length];
+	
+		
+	var line = d3.svg.line()
+		.x(function(d) { return x(Number(d.DaysSinceLastElection)); })
+		.y(function(d) { return y(Number(d.TransactionAmountAdj)); });
+
+	var svg = d3.select("body").append("svg")
+		.attr("width", width + margin.left + margin.right)
+		.attr("height", height + margin.top + margin.bottom)
+	  .append("g")
+		.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+	  //x.domain(d3.extent(data, function(d) { return Number(d.DaysSinceLastElection); }));
+	  x.domain([1200,1460]); //4 years since last election
+	  y.domain([0,d3.max(data, function(d) { return Number(d.TransactionAmountAdj); })]);
+
+	  svg.append("g")
+		  .attr("class", "x axis")
+		  .attr("transform", "translate(0," + height + ")")
+		  .call(xAxis);
+
+	  svg.append("g")
+		  .attr("class", "y axis")
+		  .call(yAxis)
+		.append("text")
+		  //.attr("transform", "rotate(-90)")
+		  .attr("y", -20)
+		  .attr("x",-150)
+		  .attr("dy", ".71em")
+		  .style("text-anchor", "start")
+		  .text("Total Contributions");
+
+		
+		for (i=0; i< years.length; i++){
+			year_data = data.filter(function(d){
+				if (d.NextElection == years[i]){
+					return d;
+				};
+			});
+			year_data.sort(function(a, b) { return a.DaysSinceLastElection - b.DaysSinceLastElection; });
+			
+			svg.append("path")
+			  .datum(year_data)
+			  .attr("class", "line")
+			  .attr("d", line)
+			  .style("stroke",colors[i]);
+		};
+		
+		
+	 
+	};
+
+//loads the data
+var load_data = function(){
+	d3.csv("./contributions.csv",function(data){
+		try{
+			dataset = data;
+			//console.log(data)
+			//var years = [];
+			for (i=0; i<dataset.length; i++){
+				if (dataset[i].NextElection != ""){
+					years.push(dataset[i].NextElection);
+				};
+			};
+			years = d3.set(years).values(); //unique election years
+			//console.log(years);
+		
+			//displayDataByMeal();
+			line_chart(dataset);
+		}
+		catch (err){
+			console.log(err);
+		}
+	});
+};
+	
+//loads page text
+var load_text = function(){
+	//Page title and subtitle
+	d3.select("body")
+		.append("h1")
+		.text("The Price of a US Presidential Election")
+		.style("font","cambria")
+		.style("font-size","24px")
+		.style("text-align","center")
+		.style("color","rgb(150,150,150)");
+		
+	d3.select("body")
+		.append("h2")
+		.text("Visualizing Campaign Finance");
+		
+	//Short description of data visualization
+	
+	d3.select("body")
+		.append("p")
+		.text("INTORDUCTION TEXT ")
+		.style("font","cambria")
+		.style("font-size","14px")
+		.style("text-align","justified")
+		.style("color","rgb(130,130,130)");
+	
+};
+
+var dataset;
+var years = [];
+load_text();
+load_data();
+
+
+		</script>
+    </body>
+</html>
